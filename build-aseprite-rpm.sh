@@ -9,7 +9,7 @@
 set -e
 
 # 1. Install required packages
-REQUIRED_PKGS=(git cmake ninja-build gcc-c++ libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXext-devel libXinerama-devel libXfixes-devel libpng-devel libjpeg-turbo-devel zlib-devel freetype-devel fontconfig-devel mesa-libGL-devel curl rpm-build harfbuzz-devel pixman-devel lua-devel libwebp-devel tinyxml2-devel desktop-file-utils pkgconfig)
+REQUIRED_PKGS=(git cmake ninja-build gcc-c++ libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXext-devel libXinerama-devel libXfixes-devel libpng-devel libjpeg-turbo-devel zlib-devel freetype-devel fontconfig-devel mesa-libGL-devel curl curl-devel rpm-build harfbuzz-devel pixman-devel lua-devel libwebp-devel tinyxml2-devel desktop-file-utils pkgconfig)
 MISSING_PKGS=()
 for pkg in "${REQUIRED_PKGS[@]}"; do
     if ! rpm -q $pkg &>/dev/null; then
