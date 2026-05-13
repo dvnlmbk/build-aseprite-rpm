@@ -12,7 +12,7 @@ set -e
 REQUIRED_PKGS=(git cmake ninja-build gcc-c++ libX11-devel libXcursor-devel libXrandr-devel libXi-devel libXext-devel libXinerama-devel libXfixes-devel libpng-devel libjpeg-turbo-devel zlib-devel freetype-devel fontconfig-devel mesa-libGL-devel curl curl-devel rpm-build harfbuzz-devel pixman-devel lua-devel libwebp-devel tinyxml2-devel desktop-file-utils pkgconfig)
 MISSING_PKGS=()
 for pkg in "${REQUIRED_PKGS[@]}"; do
-    if ! rpm -q $pkg &>/dev/null; then
+    if ! rpm -q --whatprovides "$pkg" &>/dev/null; then
         MISSING_PKGS+=("$pkg")
     fi
 done
@@ -26,6 +26,13 @@ if [ ! -d aseprite ]; then
     git clone --recursive https://github.com/aseprite/aseprite.git
 fi
 cd aseprite
+git fetch --tags
+STABLE_TAG=$(git tag --sort=-v:refname | grep -E '^v[0-9]+(\.[0-9]+)+$' | head -n1)
+if [ -z "$STABLE_TAG" ]; then
+    echo "Error: No stable Aseprite tag found."
+    exit 1
+fi
+git checkout "$STABLE_TAG"
 git submodule update --init --recursive
 cd ..
 
@@ -48,7 +55,7 @@ fi
 
 # 3. Read version number
 cd aseprite
-VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//; s/-/~/g')
 cd ..
 
 # 4. Adjust .spec file

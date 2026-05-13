@@ -1,5 +1,5 @@
 Name:           aseprite
-Version:        1.3.14.3
+Version:        1.3.17.2
 Release:        1%{?dist}
 Summary:        Animated sprite editor & pixel art tool
 
